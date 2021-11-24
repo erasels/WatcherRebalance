@@ -1,0 +1,12 @@
+{
+  "Blasphemy": {
+    "NAME": "Blasphemy",
+    "DESCRIPTION": "Enter Divinity. NL Take !M! damage next turn. NL Exhaust.",
+    "UPGRADE_DESCRIPTION": "Retain. NL Enter Divinity. NL Take !M! damage next turn. NL Exhaust."
+  },
+  "Eruption": {
+    "NAME": "Eruption",
+    "DESCRIPTION": "Deal !D! damage. NL Enter Wrath. NL If you were in Calm, gain [E] .",
+    "UPGRADE_DESCRIPTION": "Deal !D! damage. NL Enter Wrath. NL If you were in Calm, gain [E] [E] ."
+  }
+}
