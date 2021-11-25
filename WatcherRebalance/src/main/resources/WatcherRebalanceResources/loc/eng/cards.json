@@ -34,5 +34,9 @@
   "FollowUp": {
     "NAME": "Follow-Up",
     "DESCRIPTION": "Deal !D! damage. NL If the last card played this combat was an Attack, gain [E] [E]."
+  },
+  "ThroughViolence": {
+    "NAME": "Through Violence",
+    "DESCRIPTION": "Deal !D! damage. NL If you are in Wrath, enter Calm and gain [E] [E]. NL Exhaust."
   }
 }

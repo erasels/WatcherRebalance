@@ -10,14 +10,17 @@ import com.evacipated.cardcrawl.modthespire.lib.*;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.actions.common.DamageAllEnemiesAction;
 import com.megacrit.cardcrawl.actions.common.GainEnergyAction;
+import com.megacrit.cardcrawl.actions.watcher.ChangeStanceAction;
 import com.megacrit.cardcrawl.actions.watcher.FollowUpAction;
 import com.megacrit.cardcrawl.actions.watcher.StanceCheckAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.cards.purple.*;
+import com.megacrit.cardcrawl.cards.tempCards.ThroughViolence;
 import com.megacrit.cardcrawl.localization.CardStrings;
 import com.megacrit.cardcrawl.stances.CalmStance;
 import com.megacrit.cardcrawl.stances.DivinityStance;
+import com.megacrit.cardcrawl.stances.WrathStance;
 import javassist.*;
 
 public class CardPatches {
@@ -233,5 +236,29 @@ public class CardPatches {
         }
     }
 
+    //Reach Heaven Through Violence
+    @SpirePatch2(clz = ReachHeaven.class, method = SpirePatch.CONSTRUCTOR)
+    public static class ReachHeavenChangeBaseValues {
+        private static final int DMG_INC = 6;
+        @SpirePostfixPatch
+        public static void patch(AbstractCard __instance) {
+            __instance.baseDamage += DMG_INC;
+        }
+    }
 
+    @SpirePatch2(clz = ThroughViolence.class, method = SpirePatch.CONSTRUCTOR)
+    public static class ThroughViolenceChangeBaseValues {
+        @SpirePostfixPatch
+        public static void patch(AbstractCard __instance) {
+            __instance.selfRetain = false;
+        }
+    }
+
+    @SpirePatch2(clz = ThroughViolence.class, method = "use")
+    public static class ThroughViolenceChange {
+        @SpirePostfixPatch
+        public static void patch() {
+            UC.atb(new StanceCheckAction(WrathStance.STANCE_ID, new ChangeStanceAction(CalmStance.STANCE_ID)));
+            UC.atb(new StanceCheckAction(WrathStance.STANCE_ID, new GainEnergyAction(2)));}
+    }
 }
