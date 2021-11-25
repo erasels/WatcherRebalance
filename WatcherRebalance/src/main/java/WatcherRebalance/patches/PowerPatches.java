@@ -1,9 +1,12 @@
 package WatcherRebalance.patches;
 
+import WatcherRebalance.util.UC;
 import basemod.ReflectionHacks;
 import com.badlogic.gdx.Gdx;
 import com.evacipated.cardcrawl.modthespire.lib.*;
+import com.megacrit.cardcrawl.powers.AbstractPower;
 import com.megacrit.cardcrawl.powers.watcher.MantraPower;
+import com.megacrit.cardcrawl.powers.watcher.RushdownPower;
 import com.megacrit.cardcrawl.vfx.AbstractGameEffect;
 import com.megacrit.cardcrawl.vfx.combat.GainPowerEffect;
 import javassist.*;
@@ -60,6 +63,25 @@ public class PowerPatches {
                 return SpireReturn.Return();
             }
             return SpireReturn.Continue();
+        }
+    }
+
+    //Rushdown
+    @SpirePatch2(clz = RushdownPower.class, method = "onChangeStance")
+    public static class ChangeRushdown {
+        @SpirePrefixPatch
+        public static SpireReturn<?> patch(AbstractPower __instance) {
+            UC.doDraw(__instance.amount);
+            return SpireReturn.Return();
+        }
+    }
+
+    @SpirePatch2(clz = RushdownPower.class, method = "updateDescription")
+    public static class ChangeRushdownDesc {
+        @SpirePrefixPatch
+        public static void patch(AbstractPower __instance) {
+            String s = __instance.amount== 1 ? "card": "cards";
+            __instance.description = String.format("Whenever you switch #ystances, draw #b%d %s.", __instance.amount, s);
         }
     }
 }

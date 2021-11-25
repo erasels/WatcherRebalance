@@ -261,4 +261,23 @@ public class CardPatches {
             UC.atb(new StanceCheckAction(WrathStance.STANCE_ID, new ChangeStanceAction(CalmStance.STANCE_ID)));
             UC.atb(new StanceCheckAction(WrathStance.STANCE_ID, new GainEnergyAction(2)));}
     }
+
+    //Rushdown
+    @SpirePatch2(clz = Rushdown.class, method = SpirePatch.CONSTRUCTOR)
+    public static class RushdownChangeBaseValues {
+        @SpirePostfixPatch
+        public static void patch(AbstractCard __instance) {
+            __instance.baseMagicNumber = __instance.magicNumber = 1;
+            __instance.cost = __instance.costForTurn = 2;
+        }
+    }
+
+    @SpirePatch2(clz = Rushdown.class, method = "upgrade")
+    public static class RushdownChangeCostUpgrade {
+        @SpireInsertPatch(rloc = 2)
+        public static SpireReturn<?> patch(AbstractCard __instance) {
+            ReflectionHacks.privateMethod(AbstractCard.class, "upgradeBaseCost", int.class).invoke(__instance, 1);
+            return SpireReturn.Return();
+        }
+    }
 }
