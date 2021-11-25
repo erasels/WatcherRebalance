@@ -75,6 +75,8 @@ public class WatcherRebalance implements
         BaseMod.addKeyword("Divinity", new String[]{"divinity"},"Upon entering this stance, gain [W] [W] [W] and draw 2 cards. Switch back to your previous #yStance at the start of your next turn.");
         BaseMod.addKeyword("Stance", new String[]{"stance", "stances"},"You can only have one stance at a time. NL Whenever you switch between them, gain #b1 #yMantra.");
 
+        BaseMod.addKeyword("Scry", new String[]{"scry", "scryed"},"Look at the top X cards of your draw pile. You may discard any of them.");
+
         GameDictionary.WRATH.DESCRIPTION = "In this #yStance, you deal and receive #b50% increased attack damage.";
         GameDictionary.CALM.DESCRIPTION = "Increases #yBlock gained from cards by #b33%.";
         GameDictionary.ENLIGHTENMENT.DESCRIPTION = "Upon entering this stance, gain [W] [W] [W] and draw 2 cards. Switch back to your previous #yStance at the start of your next turn.";

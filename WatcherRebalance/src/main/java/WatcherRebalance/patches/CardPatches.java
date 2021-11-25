@@ -1,19 +1,22 @@
 package WatcherRebalance.patches;
 
+import WatcherRebalance.cards.interfaces.WhenScriedCard;
 import WatcherRebalance.power.DelayedDamagePower;
 import WatcherRebalance.power.LikeWaterDrawPower;
 import WatcherRebalance.power.LikeWaterEnergyPower;
 import WatcherRebalance.util.UC;
 import basemod.ReflectionHacks;
 import com.evacipated.cardcrawl.modthespire.lib.*;
+import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.actions.common.GainEnergyAction;
 import com.megacrit.cardcrawl.actions.watcher.StanceCheckAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.cards.purple.*;
 import com.megacrit.cardcrawl.localization.CardStrings;
 import com.megacrit.cardcrawl.stances.CalmStance;
 import com.megacrit.cardcrawl.stances.DivinityStance;
-import javassist.CtBehavior;
+import javassist.*;
 
 public class CardPatches {
     //Blasphemy
@@ -57,7 +60,6 @@ public class CardPatches {
         @SpireInsertPatch(rloc = 2)
         public static SpireReturn<?> patch(AbstractCard __instance) {
             __instance.rawDescription = ((CardStrings)ReflectionHacks.getPrivateStatic(Eruption.class, "cardStrings")).UPGRADE_DESCRIPTION;
-            //ReflectionHacks.privateMethod(AbstractCard.class, "upgradeDamage", int.class).invoke(__instance, 3);
             __instance.initializeDescription();
             return SpireReturn.Return();
         }
@@ -155,6 +157,48 @@ public class CardPatches {
                 UC.doPow(new LikeWaterEnergyPower(__instance.magicNumber));
             }
             return SpireReturn.Return();
+        }
+    }
+
+    //Weave
+    @SpirePatch2(clz = Weave.class, method = SpirePatch.CONSTRUCTOR)
+    public static class WeaveChangeBaseValues {
+        @SpirePostfixPatch
+        public static void patch(AbstractCard __instance) {
+            __instance.cost = 1;
+            __instance.baseDamage = 6;
+            __instance.shuffleBackIntoDrawPile = true;
+            __instance.magicNumber = __instance.baseMagicNumber = 14;
+        }
+    }
+
+    @SpirePatch2(clz = Weave.class, method = "upgrade")
+    public static class WeaveChangeUpgrade {
+        @SpireInsertPatch(rloc = 2)
+        public static void patch(AbstractCard __instance) {
+            ReflectionHacks.privateMethod(AbstractCard.class, "upgradeMagicNumber", int.class).invoke(__instance, 3);
+        }
+    }
+
+    @SpirePatch(clz = Weave.class, method = SpirePatch.CONSTRUCTOR)
+    public static class AddWeaveScryedHook {
+        @SpireRawPatch
+        public static void patch(CtBehavior ctMethodToPatch) throws NotFoundException, CannotCompileException {
+            CtClass ctClass = ctMethodToPatch.getDeclaringClass();
+            ClassPool pool = ctClass.getClassPool();
+
+            CtClass ctWhenScriedInterface = pool.get(WhenScriedCard.class.getName());
+            ctClass.addInterface(ctWhenScriedInterface);
+
+            CtMethod method = CtNewMethod.make(
+                    CtClass.voidType, // Return
+                    "whenScried", // Method name
+                    new CtClass[]{},
+                    null, // Exceptions
+                    UC.class.getName()+".doAllDmg(magicNumber, " + AbstractGameAction.AttackEffect.class.getName() + ".BLUNT_HEAVY, " + DamageInfo.DamageType.class.getName() + ".THORNS, false);",
+                    ctClass
+            );
+            ctClass.addMethod(method);
         }
     }
 

@@ -22,5 +22,9 @@
     "NAME": "Like Water",
     "DESCRIPTION": "Whenever you exit Calm, draw !M! card.",
     "UPGRADE_DESCRIPTION": "Whenever you exit Calm, gain [E] ."
+  },
+  "Weave": {
+    "NAME": "Weave",
+    "DESCRIPTION": "Deal !D! damage. NL Shuffle this card into your draw pile. NL When scryed, deal !M! damage to ALL enemies."
   }
 }
