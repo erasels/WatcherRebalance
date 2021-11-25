@@ -10,6 +10,7 @@ import com.evacipated.cardcrawl.modthespire.lib.*;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.actions.common.DamageAllEnemiesAction;
 import com.megacrit.cardcrawl.actions.common.GainEnergyAction;
+import com.megacrit.cardcrawl.actions.watcher.FollowUpAction;
 import com.megacrit.cardcrawl.actions.watcher.StanceCheckAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.DamageInfo;
@@ -214,5 +215,23 @@ public class CardPatches {
             UC.atb(new DamageAllEnemiesAction(UC.p(), DamageInfo.createDamageMatrix(c.magicNumber, true), DamageInfo.DamageType.THORNS, AbstractGameAction.AttackEffect.BLUNT_HEAVY));
         }
     }
+
+    //Followup
+    @SpirePatch2(clz = FollowUp.class, method = SpirePatch.CONSTRUCTOR)
+    public static class FollowupChangeBaseValues {
+        @SpirePostfixPatch
+        public static void patch(AbstractCard __instance) {
+            __instance.baseDamage = 5;
+        }
+    }
+
+    @SpirePatch2(clz = FollowUp.class, method = "use")
+    public static class ChangeFollowup {
+        @SpirePostfixPatch
+        public static void patch() {
+            UC.atb(new FollowUpAction());
+        }
+    }
+
 
 }

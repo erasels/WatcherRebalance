@@ -30,5 +30,9 @@
   "Tantrum": {
     "NAME": "Tantrum",
     "DESCRIPTION": "Deal !D! damage NL !M! times. NL Enter Wrath. NL watcherrebalance:Reshuffle."
+  },
+  "FollowUp": {
+    "NAME": "Follow-Up",
+    "DESCRIPTION": "Deal !D! damage. NL If the last card played this combat was an Attack, gain [E] [E]."
   }
 }
