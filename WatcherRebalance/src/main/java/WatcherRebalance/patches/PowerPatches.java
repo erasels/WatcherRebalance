@@ -39,7 +39,7 @@ public class PowerPatches {
         }
 
         public static void doFlashLogic(MantraPower p) {
-            if (p.amount == 1){
+            if (p.amount == ((int)ReflectionHacks.getPrivate(p, MantraPower.class, "PRAYER_REQUIRED")) - 1){
                 float t = TimerField.timer.get(p);
                 if (t <= 0f){
                     ArrayList<AbstractGameEffect> effects = ReflectionHacks.getPrivateInherited(p, MantraPower.class, "effect");
@@ -56,7 +56,7 @@ public class PowerPatches {
     public static class DontSpamSfx {
         @SpirePrefixPatch
         public static SpireReturn<?> patch(MantraPower __instance) {
-            if(__instance.amount == ((int)ReflectionHacks.getPrivate(__instance, int.class, "PRAYER_REQUIRED")) - 1) {
+            if(__instance.amount == ((int)ReflectionHacks.getPrivate(__instance, MantraPower.class, "PRAYER_REQUIRED")) - 1) {
                 return SpireReturn.Return();
             }
             return SpireReturn.Continue();
