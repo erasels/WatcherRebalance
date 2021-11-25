@@ -25,6 +25,7 @@ public class LikeWaterEnergyPower extends AbstractPower {
     @Override
     public void onChangeStance(AbstractStance oldStance, AbstractStance newStance) {
         if(CalmStance.STANCE_ID.equals(oldStance.ID)) {
+            flashWithoutSound();
             UC.atb(new GainEnergyAction(amount));
         }
     }

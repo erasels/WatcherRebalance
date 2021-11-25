@@ -77,6 +77,8 @@ public class WatcherRebalance implements
 
         BaseMod.addKeyword("Scry", new String[]{"scry", "scryed"},"Look at the top X cards of your draw pile. You may discard any of them.");
 
+        BaseMod.addKeyword("watcherrebalance:" ,"Reshuffle", new String[]{"reshuffle"},"When played, shuffle this card into your draw pile.");
+
         GameDictionary.WRATH.DESCRIPTION = "In this #yStance, you deal and receive #b50% increased attack damage.";
         GameDictionary.CALM.DESCRIPTION = "Increases #yBlock gained from cards by #b33%.";
         GameDictionary.ENLIGHTENMENT.DESCRIPTION = "Upon entering this stance, gain [W] [W] [W] and draw 2 cards. Switch back to your previous #yStance at the start of your next turn.";

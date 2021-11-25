@@ -25,6 +25,7 @@ public class LikeWaterDrawPower extends AbstractPower {
     @Override
     public void onChangeStance(AbstractStance oldStance, AbstractStance newStance) {
         if(CalmStance.STANCE_ID.equals(oldStance.ID)) {
+            flashWithoutSound();
             UC.doDraw(amount);
         }
     }

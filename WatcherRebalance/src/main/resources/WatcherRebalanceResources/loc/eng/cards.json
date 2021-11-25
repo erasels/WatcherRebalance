@@ -25,6 +25,10 @@
   },
   "Weave": {
     "NAME": "Weave",
-    "DESCRIPTION": "Deal !D! damage. NL Shuffle this card into your draw pile. NL When scryed, deal !M! damage to ALL enemies."
+    "DESCRIPTION": "Deal !D! damage. NL watcherrebalance:Reshuffle. NL When scryed, deal !M! damage to ALL enemies."
+  },
+  "Tantrum": {
+    "NAME": "Tantrum",
+    "DESCRIPTION": "Deal !D! damage NL !M! times. NL Enter Wrath. NL watcherrebalance:Reshuffle."
   }
 }

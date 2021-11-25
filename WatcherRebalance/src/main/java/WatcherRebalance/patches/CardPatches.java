@@ -8,6 +8,7 @@ import WatcherRebalance.util.UC;
 import basemod.ReflectionHacks;
 import com.evacipated.cardcrawl.modthespire.lib.*;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
+import com.megacrit.cardcrawl.actions.common.DamageAllEnemiesAction;
 import com.megacrit.cardcrawl.actions.common.GainEnergyAction;
 import com.megacrit.cardcrawl.actions.watcher.StanceCheckAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
@@ -110,7 +111,7 @@ public class CardPatches {
     public static class MRRemoveCostUpgrade {
         @SpireInsertPatch(rloc = 2)
         public static SpireReturn<?> patch(AbstractCard __instance) {
-            __instance.rawDescription = ((CardStrings)ReflectionHacks.getPrivateStatic(Eruption.class, "cardStrings")).UPGRADE_DESCRIPTION;
+            __instance.rawDescription = ((CardStrings)ReflectionHacks.getPrivateStatic(MasterReality.class, "cardStrings")).UPGRADE_DESCRIPTION;
             __instance.initializeDescription();
             __instance.isInnate = true;
             return SpireReturn.Return();
@@ -141,7 +142,7 @@ public class CardPatches {
     public static class LikeWaterChangeUpgrade {
         @SpireInsertPatch(rloc = 2)
         public static SpireReturn<?> patch(AbstractCard __instance) {
-            __instance.rawDescription = ((CardStrings)ReflectionHacks.getPrivateStatic(Eruption.class, "cardStrings")).UPGRADE_DESCRIPTION;
+            __instance.rawDescription = ((CardStrings)ReflectionHacks.getPrivateStatic(LikeWater.class, "cardStrings")).UPGRADE_DESCRIPTION;
             __instance.initializeDescription();
             return SpireReturn.Return();
         }
@@ -165,10 +166,10 @@ public class CardPatches {
     public static class WeaveChangeBaseValues {
         @SpirePostfixPatch
         public static void patch(AbstractCard __instance) {
-            __instance.cost = 1;
+            __instance.cost = __instance.costForTurn = 1;
             __instance.baseDamage = 6;
             __instance.shuffleBackIntoDrawPile = true;
-            __instance.magicNumber = __instance.baseMagicNumber = 14;
+            __instance.magicNumber = __instance.baseMagicNumber = 13;
         }
     }
 
@@ -176,7 +177,15 @@ public class CardPatches {
     public static class WeaveChangeUpgrade {
         @SpireInsertPatch(rloc = 2)
         public static void patch(AbstractCard __instance) {
-            ReflectionHacks.privateMethod(AbstractCard.class, "upgradeMagicNumber", int.class).invoke(__instance, 3);
+            ReflectionHacks.privateMethod(AbstractCard.class, "upgradeMagicNumber", int.class).invoke(__instance, 2);
+        }
+    }
+
+    @SpirePatch2(clz = Weave.class, method = "triggerOnScry")
+    public static class RemovePreviousWeaveEffect {
+        @SpirePrefixPatch
+        public static SpireReturn<?> patch() {
+            return SpireReturn.Return();
         }
     }
 
@@ -195,10 +204,14 @@ public class CardPatches {
                     "whenScried", // Method name
                     new CtClass[]{},
                     null, // Exceptions
-                    UC.class.getName()+".doAllDmg(magicNumber, " + AbstractGameAction.AttackEffect.class.getName() + ".BLUNT_HEAVY, " + DamageInfo.DamageType.class.getName() + ".THORNS, false);",
+                    AddWeaveScryedHook.class.getName() + ".Do(this);",
                     ctClass
             );
             ctClass.addMethod(method);
+        }
+
+        public static void Do(AbstractCard c) {
+            UC.atb(new DamageAllEnemiesAction(UC.p(), DamageInfo.createDamageMatrix(c.magicNumber, true), DamageInfo.DamageType.THORNS, AbstractGameAction.AttackEffect.BLUNT_HEAVY));
         }
     }
 
