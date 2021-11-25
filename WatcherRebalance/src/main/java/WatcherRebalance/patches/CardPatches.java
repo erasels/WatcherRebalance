@@ -79,7 +79,7 @@ public class CardPatches {
         private static class Locator extends SpireInsertLocator {
             @Override
             public int[] Locate(CtBehavior ctBehavior) throws Exception {
-                Matcher finalMatcher = new Matcher.MethodCallMatcher(AbstractCard.class, "cantUseMessage");
+                Matcher finalMatcher = new Matcher.FieldAccessMatcher(SignatureMove.class, "cantUseMessage");
                 return LineFinder.findInOrder(ctBehavior, finalMatcher);
             }
         }
