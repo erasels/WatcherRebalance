@@ -12,6 +12,7 @@ public class DelayedDamagePower extends AbstractPower {
         this.ID = "watcherRebalance:DelayedDamage";
         this.owner = owner;
         this.amount = amount;
+        type = PowerType.DEBUFF;
         updateDescription();
         loadRegion("anger");
     }

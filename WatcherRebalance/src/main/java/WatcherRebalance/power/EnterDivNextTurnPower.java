@@ -10,6 +10,7 @@ public class EnterDivNextTurnPower extends AbstractPower {
     public EnterDivNextTurnPower(AbstractCreature owner, int amount) {
         this.name = "Delayed Divinity";
         this.ID = "watcherRebalance:DelayedDivinity";
+        type = PowerType.BUFF;
         this.owner = owner;
         this.amount = amount;
         updateDescription();
