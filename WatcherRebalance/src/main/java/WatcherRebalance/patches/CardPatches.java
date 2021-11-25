@@ -1,6 +1,8 @@
 package WatcherRebalance.patches;
 
 import WatcherRebalance.power.DelayedDamagePower;
+import WatcherRebalance.power.LikeWaterDrawPower;
+import WatcherRebalance.power.LikeWaterEnergyPower;
 import WatcherRebalance.util.UC;
 import basemod.ReflectionHacks;
 import com.evacipated.cardcrawl.modthespire.lib.*;
@@ -112,4 +114,48 @@ public class CardPatches {
             return SpireReturn.Return();
         }
     }
+
+    //Swivel
+    @SpirePatch2(clz = Swivel.class, method = SpirePatch.CONSTRUCTOR)
+    public static class SwivelIncBlk {
+        private static final int INC_BLK = 1;
+        @SpirePostfixPatch
+        public static void patch(AbstractCard __instance) {
+            __instance.baseBlock += INC_BLK;
+        }
+    }
+
+    //Like Water
+    @SpirePatch2(clz = LikeWater.class, method = SpirePatch.CONSTRUCTOR)
+    public static class LikeWaterChangeMagic {
+        private static final int NEW_MAGIC = 1;
+        @SpirePostfixPatch
+        public static void patch(AbstractCard __instance) {
+            __instance.baseMagicNumber = __instance.magicNumber = NEW_MAGIC;
+        }
+    }
+
+    @SpirePatch2(clz = LikeWater.class, method = "upgrade")
+    public static class LikeWaterChangeUpgrade {
+        @SpireInsertPatch(rloc = 2)
+        public static SpireReturn<?> patch(AbstractCard __instance) {
+            __instance.rawDescription = ((CardStrings)ReflectionHacks.getPrivateStatic(Eruption.class, "cardStrings")).UPGRADE_DESCRIPTION;
+            __instance.initializeDescription();
+            return SpireReturn.Return();
+        }
+    }
+
+    @SpirePatch2(clz = LikeWater.class, method = "use")
+    public static class LikeWaterChange {
+        @SpirePrefixPatch
+        public static SpireReturn<?> patch(AbstractCard __instance) {
+            if(!__instance.upgraded) {
+                UC.doPow(new LikeWaterDrawPower(__instance.magicNumber));
+            } else {
+                UC.doPow(new LikeWaterEnergyPower(__instance.magicNumber));
+            }
+            return SpireReturn.Return();
+        }
+    }
+
 }

@@ -17,5 +17,10 @@
     "NAME": "Master Reality",
     "DESCRIPTION": "Whenever a card is created during combat, Upgrade it.",
     "UPGRADE_DESCRIPTION": "Innate. NL Whenever a card is created during combat, Upgrade it."
+  },
+  "LikeWater": {
+    "NAME": "Like Water",
+    "DESCRIPTION": "Whenever you exit Calm, draw !M! card.",
+    "UPGRADE_DESCRIPTION": "Whenever you exit Calm, gain [E] ."
   }
 }
