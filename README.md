@@ -12,3 +12,7 @@ Gain 1 Mantra whenever you switch stances.
 Card changes:  
 Blasphemy: Take 10 damage next turn instead of dying.  
 Eruption: Increased base damage to 12. Does not reduce energy cost on upgrade. Gain energy when used from Calm. On upgrade increases energy gain.  
+
+
+Further changes can be found here:
+https://docs.google.com/spreadsheets/d/e/2PACX-1vStxeBQtibpuFZa47z7asbMzbaee5-b-MDH_QJRTeQUFBXI35L6GmcaH58yu5zZm50qBppxWB4I1S88/pubhtml
