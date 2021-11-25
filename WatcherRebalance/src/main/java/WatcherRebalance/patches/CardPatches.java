@@ -7,10 +7,11 @@ import com.evacipated.cardcrawl.modthespire.lib.*;
 import com.megacrit.cardcrawl.actions.common.GainEnergyAction;
 import com.megacrit.cardcrawl.actions.watcher.StanceCheckAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
-import com.megacrit.cardcrawl.cards.purple.Blasphemy;
-import com.megacrit.cardcrawl.cards.purple.Eruption;
+import com.megacrit.cardcrawl.cards.purple.*;
 import com.megacrit.cardcrawl.localization.CardStrings;
 import com.megacrit.cardcrawl.stances.CalmStance;
+import com.megacrit.cardcrawl.stances.DivinityStance;
+import javassist.CtBehavior;
 
 public class CardPatches {
     //Blasphemy
@@ -56,6 +57,58 @@ public class CardPatches {
             __instance.rawDescription = ((CardStrings)ReflectionHacks.getPrivateStatic(Eruption.class, "cardStrings")).UPGRADE_DESCRIPTION;
             //ReflectionHacks.privateMethod(AbstractCard.class, "upgradeDamage", int.class).invoke(__instance, 3);
             __instance.initializeDescription();
+            return SpireReturn.Return();
+        }
+    }
+
+    //Signature Move
+    @SpirePatch2(clz = SignatureMove.class, method = "canUse")
+    public static class SMAddAdditionalUse {
+        @SpireInsertPatch(locator = Locator.class)
+        public static SpireReturn<Boolean> patch() {
+            if(DivinityStance.STANCE_ID.equals(UC.p().stance.ID)) {
+                return SpireReturn.Return(true);
+            }
+            return SpireReturn.Continue();
+        }
+
+        private static class Locator extends SpireInsertLocator {
+            @Override
+            public int[] Locate(CtBehavior ctBehavior) throws Exception {
+                Matcher finalMatcher = new Matcher.MethodCallMatcher(AbstractCard.class, "cantUseMessage");
+                return LineFinder.findInOrder(ctBehavior, finalMatcher);
+            }
+        }
+    }
+
+    @SpirePatch2(clz = SignatureMove.class, method = "triggerOnGlowCheck")
+    public static class SMFixGlow {
+        @SpireInsertPatch(rloc = 9, localvars = {"glow"})
+        public static void patch(@ByRef boolean[] glow) {
+            if(!glow[0] && DivinityStance.STANCE_ID.equals(UC.p().stance.ID)) {
+                glow[0] = true;
+            }
+        }
+    }
+
+    //Flying Sleeves
+    @SpirePatch2(clz = FlyingSleeves.class, method = SpirePatch.CONSTRUCTOR)
+    public static class FlyingSleevesIncDamage {
+        private static final int INC_DMG = 1;
+        @SpirePostfixPatch
+        public static void patch(AbstractCard __instance) {
+            __instance.baseDamage += INC_DMG;
+        }
+    }
+
+    //Master Reality
+    @SpirePatch2(clz = MasterReality.class, method = "upgrade")
+    public static class MRRemoveCostUpgrade {
+        @SpireInsertPatch(rloc = 2)
+        public static SpireReturn<?> patch(AbstractCard __instance) {
+            __instance.rawDescription = ((CardStrings)ReflectionHacks.getPrivateStatic(Eruption.class, "cardStrings")).UPGRADE_DESCRIPTION;
+            __instance.initializeDescription();
+            __instance.isInnate = true;
             return SpireReturn.Return();
         }
     }

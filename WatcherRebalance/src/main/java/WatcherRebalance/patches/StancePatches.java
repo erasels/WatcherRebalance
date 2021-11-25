@@ -48,7 +48,7 @@ public class StancePatches {
 
     @SpirePatch(clz = AbstractCard.class, method = "applyPowersToBlock")
     public static class BlockModificationStancePatch {
-        public static float BLK_MULTI = 1.333333333f;
+        public static float BLK_MULTI = 1.33333333333f;
         @SpireInsertPatch(locator = Locator.class, localvars = {"tmp"})
         public static void patch(AbstractCard __instance, @ByRef float[] tmp) {
             if(UC.p().stance instanceof CalmStance) {
