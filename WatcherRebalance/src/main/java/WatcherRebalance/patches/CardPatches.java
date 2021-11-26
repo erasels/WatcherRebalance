@@ -390,4 +390,25 @@ public class CardPatches {
             UC.atb(new NotStanceCheckAction(NeutralStance.STANCE_ID, new ApplyPowerAction(p, p, new PlatedArmorPower(p, __instance.magicNumber), __instance.magicNumber)));
         }
     }
+
+    //Windmill Strike
+    @SpirePatch2(clz = WindmillStrike.class, method = SpirePatch.CONSTRUCTOR)
+    public static class WindmillStrikeChangeBaseValues {
+        @SpirePostfixPatch
+        public static void patch(AbstractCard __instance) {
+            __instance.cost = __instance.costForTurn = 1;
+            __instance.baseDamage -= 1;
+        }
+    }
+
+    //SashWhip, CrushJoints
+    @SpirePatch2(clz = SashWhip.class, method = SpirePatch.CONSTRUCTOR)
+    @SpirePatch2(clz = CrushJoints.class, method = SpirePatch.CONSTRUCTOR)
+    public static class SashCrushChangeBaseValues {
+        private static final int DMG_INC = 1;
+        @SpirePostfixPatch
+        public static void patch(AbstractCard __instance) {
+            __instance.baseDamage += DMG_INC;
+        }
+    }
 }
