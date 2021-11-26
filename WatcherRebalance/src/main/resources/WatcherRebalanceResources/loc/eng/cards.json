@@ -38,5 +38,22 @@
   "ThroughViolence": {
     "NAME": "Through Violence",
     "DESCRIPTION": "Deal !D! damage. NL If you are in Wrath, enter Calm and gain [E] [E]. NL Exhaust."
+  },
+  "Sanctity": {
+    "NAME": "Sanctity",
+    "DESCRIPTION": "Gain !B! Block. NL Shuffle a *Miracle into your draw pile for every !M! Mantra you have."
+  },
+  "EmptyMind": {
+    "NAME": "Empty Mind",
+    "DESCRIPTION": "Draw !M! cards. NL Exit your Stance to gain [E] [E].",
+    "UPGRADE_DESCRIPTION": "Draw !M! cards. NL Exit your Stance to gain [E] [E]."
+  },
+  "EmptyFist": {
+    "NAME": "Empty Fist",
+    "DESCRIPTION": "Deal !D! damage. NL Exit your Stance to gain !M! Strength."
+  },
+  "EmptyBody": {
+    "NAME": "Empty Body",
+    "DESCRIPTION": "Gain !B! Block. NL Exit your Stanceto gain !M! plated armor."
   }
 }

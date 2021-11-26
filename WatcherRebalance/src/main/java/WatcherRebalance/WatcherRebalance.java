@@ -1,8 +1,10 @@
 package WatcherRebalance;
 
+import WatcherRebalance.cards.NewSanctity;
 import basemod.BaseMod;
 import basemod.ModLabeledToggleButton;
 import basemod.ModPanel;
+import basemod.interfaces.EditCardsSubscriber;
 import basemod.interfaces.EditKeywordsSubscriber;
 import basemod.interfaces.EditStringsSubscriber;
 import basemod.interfaces.PostInitializeSubscriber;
@@ -23,7 +25,8 @@ import java.util.Properties;
 public class WatcherRebalance implements
         PostInitializeSubscriber,
         EditKeywordsSubscriber,
-        EditStringsSubscriber
+        EditStringsSubscriber,
+        EditCardsSubscriber
 {
     public static final Logger logger = LogManager.getLogger(WatcherRebalance.class);
     private static SpireConfig modConfig = null;
@@ -92,5 +95,10 @@ public class WatcherRebalance implements
 
     public static String assetPath(String path) {
         return "WatcherRebalanceResources/" + path;
+    }
+
+    @Override
+    public void receiveEditCards() {
+        BaseMod.addCard(new NewSanctity());
     }
 }

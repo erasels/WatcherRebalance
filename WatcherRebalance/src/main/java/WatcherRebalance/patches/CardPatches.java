@@ -9,18 +9,24 @@ import basemod.ReflectionHacks;
 import com.badlogic.gdx.graphics.Color;
 import com.evacipated.cardcrawl.modthespire.lib.*;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
+import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
 import com.megacrit.cardcrawl.actions.common.DamageAllEnemiesAction;
 import com.megacrit.cardcrawl.actions.common.GainEnergyAction;
 import com.megacrit.cardcrawl.actions.watcher.ChangeStanceAction;
 import com.megacrit.cardcrawl.actions.watcher.FollowUpAction;
+import com.megacrit.cardcrawl.actions.watcher.NotStanceCheckAction;
 import com.megacrit.cardcrawl.actions.watcher.StanceCheckAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.cards.purple.*;
 import com.megacrit.cardcrawl.cards.tempCards.ThroughViolence;
+import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.localization.CardStrings;
+import com.megacrit.cardcrawl.powers.PlatedArmorPower;
+import com.megacrit.cardcrawl.powers.StrengthPower;
 import com.megacrit.cardcrawl.stances.CalmStance;
 import com.megacrit.cardcrawl.stances.DivinityStance;
+import com.megacrit.cardcrawl.stances.NeutralStance;
 import com.megacrit.cardcrawl.stances.WrathStance;
 import javassist.*;
 
@@ -327,6 +333,61 @@ public class CardPatches {
         public static SpireReturn<?> patch(AbstractCard __instance) {
             ReflectionHacks.privateMethod(AbstractCard.class, "upgradeBaseCost", int.class).invoke(__instance, 1);
             return SpireReturn.Return();
+        }
+    }
+
+    //Conclude
+    @SpirePatch2(clz = Conclude.class, method = SpirePatch.CONSTRUCTOR)
+    public static class ConcludeChangeBaseValues {
+        private static final int DMG_INC = 2;
+        @SpirePostfixPatch
+        public static void patch(AbstractCard __instance) {
+            __instance.baseDamage += DMG_INC;
+        }
+    }
+
+    //Empty Mind
+    @SpirePatch2(clz = EmptyMind.class, method = "use")
+    public static class ChangeEmptyMind {
+        @SpireInsertPatch(rloc = 5)
+        public static void patch() {
+            UC.atb(new NotStanceCheckAction(NeutralStance.STANCE_ID, new GainEnergyAction(2)));
+        }
+    }
+
+    //Empty Fist
+    @SpirePatch2(clz = EmptyFist.class, method = SpirePatch.CONSTRUCTOR)
+    public static class EmptyFistChangeBaseValues {
+        private static final int MAGIC = 2;
+        @SpirePostfixPatch
+        public static void patch(AbstractCard __instance) {
+            __instance.baseMagicNumber = __instance.magicNumber = MAGIC;
+        }
+    }
+
+    @SpirePatch2(clz = EmptyFist.class, method = "use")
+    public static class ChangeEmptyFist {
+        @SpireInsertPatch(rloc = 5)
+        public static void patch(AbstractCard __instance, AbstractPlayer p) {
+            UC.atb(new NotStanceCheckAction(NeutralStance.STANCE_ID, new ApplyPowerAction(p, p, new StrengthPower(p, __instance.magicNumber), __instance.magicNumber)));
+        }
+    }
+
+    //Empty Body
+    @SpirePatch2(clz = EmptyBody.class, method = SpirePatch.CONSTRUCTOR)
+    public static class EmptyBodyChangeBaseValues {
+        private static final int MAGIC = 2;
+        @SpirePostfixPatch
+        public static void patch(AbstractCard __instance) {
+            __instance.baseMagicNumber = __instance.magicNumber = MAGIC;
+        }
+    }
+
+    @SpirePatch2(clz = EmptyBody.class, method = "use")
+    public static class ChangeEmptyBody {
+        @SpireInsertPatch(rloc = 5)
+        public static void patch(AbstractCard __instance, AbstractPlayer p) {
+            UC.atb(new NotStanceCheckAction(NeutralStance.STANCE_ID, new ApplyPowerAction(p, p, new PlatedArmorPower(p, __instance.magicNumber), __instance.magicNumber)));
         }
     }
 }
