@@ -6,6 +6,7 @@ import WatcherRebalance.power.LikeWaterDrawPower;
 import WatcherRebalance.power.LikeWaterEnergyPower;
 import WatcherRebalance.util.UC;
 import basemod.ReflectionHacks;
+import com.badlogic.gdx.graphics.Color;
 import com.evacipated.cardcrawl.modthespire.lib.*;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.actions.common.DamageAllEnemiesAction;
@@ -67,6 +68,34 @@ public class CardPatches {
             __instance.rawDescription = ((CardStrings)ReflectionHacks.getPrivateStatic(Eruption.class, "cardStrings")).UPGRADE_DESCRIPTION;
             __instance.initializeDescription();
             return SpireReturn.Return();
+        }
+    }
+
+    @SpirePatch2(clz = Eruption.class, method = SpirePatch.CONSTRUCTOR)
+    public static class EruptionGlow {
+        @SpireRawPatch
+        public static void Raw(CtBehavior ctMethodToPatch) throws CannotCompileException {
+            CtClass ctClass = ctMethodToPatch.getDeclaringClass();
+
+            CtMethod method2 = CtNewMethod.make(
+                    CtClass.voidType, // Return
+                    "triggerOnGlowCheck", // Method name
+                    new CtClass[]{}, //Paramters
+                    null, // Exceptions
+                    "{" +
+                            EruptionGlow.class.getName() + ".Do(this);" +
+                            "}",
+                    ctClass
+            );
+            ctClass.addMethod(method2);
+        }
+
+        public static void Do(AbstractCard c) {
+            if (CalmStance.STANCE_ID.equals(UC.p().stance.ID)) {
+                c.glowColor = Color.GOLD.cpy();
+            } else {
+                c.glowColor = new Color(0.2F, 0.9F, 1.0F, 0.25F);
+            }
         }
     }
 
@@ -260,6 +289,26 @@ public class CardPatches {
         public static void patch() {
             UC.atb(new StanceCheckAction(WrathStance.STANCE_ID, new ChangeStanceAction(CalmStance.STANCE_ID)));
             UC.atb(new StanceCheckAction(WrathStance.STANCE_ID, new GainEnergyAction(2)));}
+    }
+
+    @SpirePatch2(clz = ThroughViolence.class, method = SpirePatch.CONSTRUCTOR)
+    public static class ThroughViolenceGlow {
+        @SpireRawPatch
+        public static void patch(CtBehavior ctMethodToPatch) throws CannotCompileException {
+            CtClass ctClass = ctMethodToPatch.getDeclaringClass();
+
+            CtMethod method2 = CtNewMethod.make(
+                    CtClass.voidType, // Return
+                    "triggerOnGlowCheck", // Method name
+                    new CtClass[]{}, //Paramters
+                    null, // Exceptions
+                    "{" +
+                            EruptionGlow.class.getName() + ".Do(this);" +
+                            "}",
+                    ctClass
+            );
+            ctClass.addMethod(method2);
+        }
     }
 
     //Rushdown
