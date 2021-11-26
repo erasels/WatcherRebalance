@@ -12,6 +12,7 @@ import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
 import com.megacrit.cardcrawl.actions.common.DamageAllEnemiesAction;
 import com.megacrit.cardcrawl.actions.common.GainEnergyAction;
+import com.megacrit.cardcrawl.actions.common.MakeTempCardInHandAction;
 import com.megacrit.cardcrawl.actions.watcher.ChangeStanceAction;
 import com.megacrit.cardcrawl.actions.watcher.FollowUpAction;
 import com.megacrit.cardcrawl.actions.watcher.NotStanceCheckAction;
@@ -29,6 +30,8 @@ import com.megacrit.cardcrawl.stances.DivinityStance;
 import com.megacrit.cardcrawl.stances.NeutralStance;
 import com.megacrit.cardcrawl.stances.WrathStance;
 import javassist.*;
+import javassist.expr.ExprEditor;
+import javassist.expr.NewExpr;
 
 public class CardPatches {
     //Blasphemy
@@ -409,6 +412,68 @@ public class CardPatches {
         @SpirePostfixPatch
         public static void patch(AbstractCard __instance) {
             __instance.baseDamage += DMG_INC;
+        }
+    }
+
+    //Deus Ex Machina
+    @SpirePatch2(clz = DeusExMachina.class, method = SpirePatch.CONSTRUCTOR)
+    public static class DeusExChangeBaseValues {
+        @SpirePostfixPatch
+        public static void patch(AbstractCard __instance) {
+            __instance.baseMagicNumber = __instance.magicNumber = 1;
+            __instance.cardsToPreview.upgrade();
+        }
+    }
+
+    @SpirePatch2(clz = DeusExMachina.class, method = "triggerWhenDrawn")
+    public static class FixDumbExMachina {
+        @SpireInstrumentPatch
+        public static ExprEditor patch() {
+            return new ExprEditor() {
+                public void edit(NewExpr ne) throws CannotCompileException {
+                    if (ne.getClassName().equals(MakeTempCardInHandAction.class.getName())) {
+                        ne.replace("{ " +
+                                "$1 = cardsToPreview;" +
+                                "$_ = $proceed($$);" +
+                                "}");
+                    }
+                }
+            };
+        }
+    }
+
+    @SpirePatch(clz = DeusExMachina.class, method = SpirePatch.CONSTRUCTOR)
+    public static class AddDeusExScryedHook {
+        @SpireRawPatch
+        public static void patch(CtBehavior ctMethodToPatch) throws NotFoundException, CannotCompileException {
+            CtClass ctClass = ctMethodToPatch.getDeclaringClass();
+            ClassPool pool = ctClass.getClassPool();
+
+            CtClass ctWhenScriedInterface = pool.get(WhenScriedCard.class.getName());
+            ctClass.addInterface(ctWhenScriedInterface);
+
+            CtMethod method = CtNewMethod.make(
+                    CtClass.voidType, // Return
+                    "whenScried", // Method name
+                    new CtClass[]{},
+                    null, // Exceptions
+                    AddWeaveScryedHook.class.getName() + ".Do(this);",
+                    ctClass
+            );
+            ctClass.addMethod(method);
+        }
+
+        public static void Do(AbstractCard c) {
+            UC.atb(new MakeTempCardInHandAction(c.cardsToPreview, c.magicNumber));
+        }
+    }
+
+    @SpirePatch2(clz = DeusExMachina.class, method = "upgrade")
+    public static class DeusExChangeUpgrade {
+        @SpireInsertPatch(rloc = 2)
+        public static void patch(AbstractCard __instance) {
+            __instance.rawDescription = ((CardStrings)ReflectionHacks.getPrivateStatic(DeusExMachina.class, "cardStrings")).UPGRADE_DESCRIPTION;
+            __instance.initializeDescription();
         }
     }
 }

@@ -55,5 +55,10 @@
   "EmptyBody": {
     "NAME": "Empty Body",
     "DESCRIPTION": "Gain !B! Block. NL Exit your Stanceto gain !M! plated armor."
+  },
+  "DeusExMachina": {
+    "NAME": "Deus Ex Machina",
+    "DESCRIPTION": "Unplayable. NL When you draw or scry this card, add *Miracle+ to your hand. Exhaust when drawn.",
+    "UPGRADE_DESCRIPTION": "Unplayable. NL When you draw or scry this card, add !M! *Miracle+s to your hand. Exhaust when drawn."
   }
 }
