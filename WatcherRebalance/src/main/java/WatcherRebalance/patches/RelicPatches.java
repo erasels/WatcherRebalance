@@ -3,10 +3,12 @@ package WatcherRebalance.patches;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInstrumentPatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePatch2;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePostfixPatch;
+import com.megacrit.cardcrawl.actions.common.GainEnergyAction;
 import com.megacrit.cardcrawl.actions.common.MakeTempCardInHandAction;
 import com.megacrit.cardcrawl.cards.tempCards.Miracle;
 import com.megacrit.cardcrawl.relics.HolyWater;
 import com.megacrit.cardcrawl.relics.PureWater;
+import com.megacrit.cardcrawl.relics.VioletLotus;
 import javassist.CannotCompileException;
 import javassist.expr.ExprEditor;
 import javassist.expr.NewExpr;
@@ -73,6 +75,32 @@ public class RelicPatches {
             }
             __result = __result.replace(Integer.toString(3), Integer.toString(2));
             return __result.replace(MIRACLE_NAME, MIRACLE_NAME + "+");
+        }
+    }
+
+    //Violet Lotus
+    @SpirePatch2(clz = VioletLotus.class, method = "onChangeStance")
+    public static class BuffLotus {
+        @SpireInstrumentPatch
+        public static ExprEditor Instrument() {
+            return new ExprEditor() {
+                public void edit(NewExpr ne) throws CannotCompileException {
+                    if (ne.getClassName().equals(GainEnergyAction.class.getName())) {
+                        ne.replace("{ " +
+                                "$1 = 2;" +
+                                "$_ = $proceed($$);" +
+                                "}");
+                    }
+                }
+            };
+        }
+    }
+
+    @SpirePatch2(clz = VioletLotus.class, method = "getUpdatedDescription")
+    public static class ChangeVioletLotusDesc {
+        @SpirePostfixPatch
+        public static String patch(String __result) {
+            return "Whenever you exit #yCalm, gain [E] [E] .";
         }
     }
 }
