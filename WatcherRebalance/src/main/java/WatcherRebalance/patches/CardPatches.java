@@ -55,10 +55,11 @@ public class CardPatches {
     //Eruption
     @SpirePatch2(clz = Eruption.class, method = SpirePatch.CONSTRUCTOR)
     public static class EruptionBuffDamage {
-        private static final int DMG_INC = 3;
+        private static final int DMG_INC = 2;
         @SpirePostfixPatch
         public static void patch(AbstractCard __instance) {
-            __instance.baseDamage += DMG_INC;
+            __instance.cost = __instance.costForTurn = 1;
+            __instance.baseDamage -= DMG_INC;
         }
     }
 
