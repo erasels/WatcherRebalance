@@ -64,5 +64,9 @@
   "CarveReality": {
     "NAME": "Strike Reality",
     "DESCRIPTION": "Deal !D! damage. NL Add a *Smite into your hand."
+  },
+  "Adaptation": {
+    "NAME": "Rushdown",
+    "DESCRIPTION": "Whenever you switch stances, draw !M! card."
   }
 }
