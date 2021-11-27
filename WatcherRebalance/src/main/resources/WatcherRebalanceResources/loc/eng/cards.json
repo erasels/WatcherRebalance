@@ -68,5 +68,9 @@
   "Adaptation": {
     "NAME": "Rushdown",
     "DESCRIPTION": "Whenever you switch stances, draw !M! card."
+  },
+  "WreathOfFlame": {
+    "NAME": "Stacked Odds",
+    "DESCRIPTION": "Scry !M!. NL Draw 2 cards."
   }
 }

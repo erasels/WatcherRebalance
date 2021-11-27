@@ -1,6 +1,7 @@
 package WatcherRebalance;
 
 import WatcherRebalance.cards.NewSanctity;
+import WatcherRebalance.cards.NewWreathOfFlames;
 import basemod.BaseMod;
 import basemod.ModLabeledToggleButton;
 import basemod.ModPanel;
@@ -96,5 +97,6 @@ public class WatcherRebalance implements
     @Override
     public void receiveEditCards() {
         BaseMod.addCard(new NewSanctity());
+        BaseMod.addCard(new NewWreathOfFlames());
     }
 }
