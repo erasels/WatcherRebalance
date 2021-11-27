@@ -1,0 +1,20 @@
+{
+  "Wrath": {
+    "NAME": "Wrath",
+    "DESCRIPTION": [
+      "In this #yStance, you deal and receive #b50% increased attack damage."
+    ]
+  },
+  "Calm": {
+    "NAME": "Calm",
+    "DESCRIPTION": [
+      "Increase #yBlock gained from cards by #b2. NL Upon exiting this #yStance, gain [W] ."
+    ]
+  },
+  "Divinity": {
+    "NAME": "Divinity",
+    "DESCRIPTION": [
+      "Upon entering this stance, gain [W] [W] [W] and draw 2 cards. Switch back to your previous #yStance at the start of your next turn."
+    ]
+  }
+}

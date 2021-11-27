@@ -4,10 +4,11 @@ import WatcherRebalance.power.EnterDivNextTurnPower;
 import WatcherRebalance.util.UC;
 import com.badlogic.gdx.math.MathUtils;
 import com.evacipated.cardcrawl.modthespire.lib.*;
+import com.megacrit.cardcrawl.actions.common.GainEnergyAction;
 import com.megacrit.cardcrawl.actions.watcher.ChangeStanceAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
-import com.megacrit.cardcrawl.helpers.FontHelper;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.powers.watcher.MantraPower;
 import com.megacrit.cardcrawl.stances.AbstractStance;
 import com.megacrit.cardcrawl.stances.CalmStance;
@@ -28,19 +29,12 @@ public class StancePatches {
         }
     }
 
-    @SpirePatch2(clz = WrathStance.class, method = "updateDescription")
-    public static class WrathDescChange {
-        @SpirePostfixPatch
-        public static void patch(AbstractStance __instance) {
-            __instance.description = "Your Attacks deal #b50% increased damage and you take #b50% increased damage from attacks.";
-        }
-    }
-
     //Calm
     @SpirePatch2(clz = CalmStance.class, method = "onExitStance")
     public static class RemoveEnergyGain {
         @SpirePrefixPatch
         public static SpireReturn<?> patch(CalmStance __instance) {
+            AbstractDungeon.actionManager.addToBottom(new GainEnergyAction(1));
             __instance.stopIdleSfx();
             return SpireReturn.Return();
         }
@@ -49,10 +43,11 @@ public class StancePatches {
     @SpirePatch(clz = AbstractCard.class, method = "applyPowersToBlock")
     public static class BlockModificationStancePatch {
         public static float BLK_MULTI = 1.33333333333f;
+        public static int BLK_ADD = 2;
         @SpireInsertPatch(locator = Locator.class, localvars = {"tmp"})
         public static void patch(AbstractCard __instance, @ByRef float[] tmp) {
             if(UC.p().stance instanceof CalmStance) {
-                tmp[0] = tmp[0] * BLK_MULTI;
+                tmp[0] = tmp[0] + BLK_ADD;
             }
         }
 
@@ -62,14 +57,6 @@ public class StancePatches {
                 Matcher finalMatcher = new Matcher.MethodCallMatcher(MathUtils.class, "floor");
                 return LineFinder.findInOrder(ctBehavior, finalMatcher);
             }
-        }
-    }
-
-    @SpirePatch2(clz = CalmStance.class, method = "updateDescription")
-    public static class CalmDescChange {
-        @SpirePostfixPatch
-        public static void patch(AbstractStance __instance) {
-            __instance.description = "Increase #yBlock gained from cards by #b33%.";
         }
     }
 
@@ -138,15 +125,6 @@ public class StancePatches {
         public static SpireReturn<?> patch(DivinityStance __instance) {
             UC.atb(new ChangeStanceAction(StanceField.prevStance.get(__instance)));
             return SpireReturn.Return();
-        }
-    }
-
-    @SpirePatch2(clz = DivinityStance.class, method = "updateDescription")
-    public static class DivinityDescChange {
-        @SpirePostfixPatch
-        public static void patch(AbstractStance __instance) {
-            String prevStance = FontHelper.colorString(StanceField.prevStance.get(__instance), "y");
-            __instance.description = String.format("Upon entering this #yStance, gain [W] [W] [W] and draw #b2 cards. NL Switch back to your previous #yStance at the start of your next turn. ( %s )", prevStance);
         }
     }
 
