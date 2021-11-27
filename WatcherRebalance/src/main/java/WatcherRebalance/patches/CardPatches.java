@@ -352,7 +352,7 @@ public class CardPatches {
     public static class ChangeEmptyMind {
         @SpireInsertPatch(rloc = 5)
         public static void patch() {
-            UC.atb(new NotStanceCheckAction(NeutralStance.STANCE_ID, new GainEnergyAction(2)));
+            UC.atb(new NotStanceCheckAction(NeutralStance.STANCE_ID, new GainEnergyAction(1)));
         }
     }
 
