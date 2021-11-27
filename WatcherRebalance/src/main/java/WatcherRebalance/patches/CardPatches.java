@@ -9,10 +9,7 @@ import basemod.ReflectionHacks;
 import com.badlogic.gdx.graphics.Color;
 import com.evacipated.cardcrawl.modthespire.lib.*;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
-import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
-import com.megacrit.cardcrawl.actions.common.DamageAllEnemiesAction;
-import com.megacrit.cardcrawl.actions.common.GainEnergyAction;
-import com.megacrit.cardcrawl.actions.common.MakeTempCardInHandAction;
+import com.megacrit.cardcrawl.actions.common.*;
 import com.megacrit.cardcrawl.actions.watcher.ChangeStanceAction;
 import com.megacrit.cardcrawl.actions.watcher.FollowUpAction;
 import com.megacrit.cardcrawl.actions.watcher.NotStanceCheckAction;
@@ -493,6 +490,36 @@ public class CardPatches {
         @SpireInsertPatch(rloc = 2)
         public static SpireReturn<?> patch(AbstractCard __instance) {
             ReflectionHacks.privateMethod(AbstractCard.class, "upgradeBaseCost", int.class).invoke(__instance, 0);
+            return SpireReturn.Return();
+        }
+    }
+
+    //Pray
+    @SpirePatch2(clz = Pray.class, method = "use")
+    public static class PrayUseChange {
+        @SpireInstrumentPatch
+        public static ExprEditor patch() {
+            return new ExprEditor() {
+                public void edit(NewExpr ne) throws CannotCompileException {
+                    if (ne.getClassName().equals(MakeTempCardInDrawPileAction.class.getName())) {
+                        ne.replace("{ " +
+                                "if(upgraded) {" +
+                                "$2 = 2;" +
+                                "}" +
+                                "$_ = $proceed($$);" +
+                                "}");
+                    }
+                }
+            };
+        }
+    }
+
+    @SpirePatch2(clz = Pray.class, method = "upgrade")
+    public static class PrayChangeUpgrade {
+        @SpireInsertPatch(rloc = 2)
+        public static SpireReturn<?> patch(AbstractCard __instance) {
+            __instance.rawDescription = ((CardStrings)ReflectionHacks.getPrivateStatic(Pray.class, "cardStrings")).UPGRADE_DESCRIPTION;
+            __instance.initializeDescription();
             return SpireReturn.Return();
         }
     }
