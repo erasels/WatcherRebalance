@@ -486,4 +486,14 @@ public class CardPatches {
             __instance.tags.add(AbstractCard.CardTags.STRIKE);
         }
     }
+
+    //Establishment
+    @SpirePatch2(clz = Establishment.class, method = "upgrade")
+    public static class EstablishmentChangeUpgrade {
+        @SpireInsertPatch(rloc = 2)
+        public static SpireReturn<?> patch(AbstractCard __instance) {
+            ReflectionHacks.privateMethod(AbstractCard.class, "upgradeBaseCost", int.class).invoke(__instance, 0);
+            return SpireReturn.Return();
+        }
+    }
 }
