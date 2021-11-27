@@ -477,4 +477,13 @@ public class CardPatches {
             __instance.initializeDescription();
         }
     }
+
+    //Carve Reality
+    @SpirePatch2(clz = CarveReality.class, method = SpirePatch.CONSTRUCTOR)
+    public static class CarveRealityAddStrikeTag {
+        @SpirePostfixPatch
+        public static void patch(AbstractCard __instance) {
+            __instance.tags.add(AbstractCard.CardTags.STRIKE);
+        }
+    }
 }
