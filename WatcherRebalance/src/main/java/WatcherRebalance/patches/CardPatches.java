@@ -455,7 +455,7 @@ public class CardPatches {
                     "whenScried", // Method name
                     new CtClass[]{},
                     null, // Exceptions
-                    AddWeaveScryedHook.class.getName() + ".Do(this);",
+                    AddDeusExScryedHook.class.getName() + ".Do(this);",
                     ctClass
             );
             ctClass.addMethod(method);
