@@ -527,8 +527,6 @@ public class CardPatches {
     }
 
     //Smite
-
-
     @SpirePatch2(clz = Smite.class, method = SpirePatch.CONSTRUCTOR)
     public static class SmiteGlow {
         @SpireRawPatch
