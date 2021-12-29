@@ -77,5 +77,9 @@
     "NAME": "Pray",
     "DESCRIPTION": "Gain !M! Mantra. NL Shuffle an *Insight into your draw pile.",
     "UPGRADE_DESCRIPTION": "Gain !M! Mantra. NL Shuffle 2 *Insights into your draw pile."
+  },
+  "Smite": {
+    "NAME": "Smite",
+    "DESCRIPTION": "Retain. NL Deal !D! damage. NL Deals double damage when in Divinity. NL Exhaust."
   }
 }

@@ -17,9 +17,11 @@ import com.megacrit.cardcrawl.actions.watcher.StanceCheckAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.cards.purple.*;
+import com.megacrit.cardcrawl.cards.tempCards.Smite;
 import com.megacrit.cardcrawl.cards.tempCards.ThroughViolence;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.localization.CardStrings;
+import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.powers.PlatedArmorPower;
 import com.megacrit.cardcrawl.powers.StrengthPower;
 import com.megacrit.cardcrawl.stances.CalmStance;
@@ -521,6 +523,84 @@ public class CardPatches {
             __instance.rawDescription = ((CardStrings)ReflectionHacks.getPrivateStatic(Pray.class, "cardStrings")).UPGRADE_DESCRIPTION;
             __instance.initializeDescription();
             return SpireReturn.Return();
+        }
+    }
+
+    //Smite
+
+
+    @SpirePatch2(clz = Smite.class, method = SpirePatch.CONSTRUCTOR)
+    public static class SmiteGlow {
+        @SpireRawPatch
+        public static void Raw(CtBehavior ctMethodToPatch) throws CannotCompileException, NotFoundException {
+            CtClass ctClass = ctMethodToPatch.getDeclaringClass();
+
+            CtMethod method1 = CtNewMethod.make(
+                    CtClass.voidType, // Return
+                    "applyPowers", // Method name
+                    new CtClass[]{}, //Paramters
+                    null, // Exceptions
+                    "{" +
+                            "int tmp = baseDamage;" +
+                            "if (" + SmiteGlow.class.getName() + ".inDiv()) {" +
+                            "baseDamage = baseDamage * 2;" +
+                            "}" +
+                            "super.applyPowers();" +
+                            "if(tmp != baseDamage) {" +
+                            "isDamageModified = true;" +
+                            "}" +
+                            "baseDamage = tmp;" +
+                            "}",
+                    ctClass
+            );
+            ctClass.addMethod(method1);
+
+            ClassPool pool = ctClass.getClassPool();
+            CtClass ctAbstractMonster = pool.get(AbstractMonster.class.getName());
+
+            CtMethod method2 = CtNewMethod.make(
+                    CtClass.voidType, // Return
+                    "calculateCardDamage", // Method name
+                    new CtClass[]{ctAbstractMonster}, //Paramters
+                    null, // Exceptions
+                    "{" +
+                            "int tmp = baseDamage;" +
+                            "if (" + SmiteGlow.class.getName() + ".inDiv()) {" +
+                            "baseDamage = baseDamage * 2;" +
+                            "}" +
+                            "super.calculateCardDamage($1);" +
+                            "if(tmp != baseDamage) {" +
+                            "isDamageModified = true;" +
+                            "}" +
+                            "baseDamage = tmp;" +
+                            "}",
+                    ctClass
+            );
+            ctClass.addMethod(method2);
+
+            CtMethod method3 = CtNewMethod.make(
+                    CtClass.voidType, // Return
+                    "triggerOnGlowCheck", // Method name
+                    new CtClass[]{}, //Paramters
+                    null, // Exceptions
+                    "{" +
+                            SmiteGlow.class.getName() + ".Do(this);" +
+                            "}",
+                    ctClass
+            );
+            ctClass.addMethod(method3);
+        }
+
+        public static void Do(AbstractCard c) {
+            if (inDiv()) {
+                c.glowColor = Color.GOLD.cpy();
+            } else {
+                c.glowColor = new Color(0.2F, 0.9F, 1.0F, 0.25F);
+            }
+        }
+
+        public static boolean inDiv() {
+            return DivinityStance.STANCE_ID.equals(UC.p().stance.ID);
         }
     }
 }
