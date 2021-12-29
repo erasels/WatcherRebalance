@@ -361,7 +361,7 @@ public class CardPatches {
     //Empty Fist
     @SpirePatch2(clz = EmptyFist.class, method = SpirePatch.CONSTRUCTOR)
     public static class EmptyFistChangeBaseValues {
-        private static final int MAGIC = 1;
+        private static final int MAGIC = 2;
         @SpirePostfixPatch
         public static void patch(AbstractCard __instance) {
             __instance.baseMagicNumber = __instance.magicNumber = MAGIC;
@@ -379,7 +379,7 @@ public class CardPatches {
     //Empty Body
     @SpirePatch2(clz = EmptyBody.class, method = SpirePatch.CONSTRUCTOR)
     public static class EmptyBodyChangeBaseValues {
-        private static final int MAGIC = 1;
+        private static final int MAGIC = 2;
         @SpirePostfixPatch
         public static void patch(AbstractCard __instance) {
             __instance.baseMagicNumber = __instance.magicNumber = MAGIC;
