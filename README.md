@@ -3,7 +3,7 @@ This mod rebalances the Watcher base game character to have less of a focus on b
 
 The goal of this mod was not to make the watcher "balanced", it was to make overwhelming damage not always be the best answer to every situation. As such, some cards get buffed to counteract the rather big power-loss even if those cards were considered good already in some cases.
 
-**System changes:**
+**System changes:**  
 Wrath increases damage taken and dealt by 50%.
 Calm increases Block gained from cards by 2 and you gain 1 Energy when exiting it.
 Divinity when entered, you gain 3 energy and draw 2 cards.
