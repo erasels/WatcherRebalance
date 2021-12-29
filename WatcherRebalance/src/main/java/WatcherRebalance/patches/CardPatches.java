@@ -601,4 +601,13 @@ public class CardPatches {
             return DivinityStance.STANCE_ID.equals(UC.p().stance.ID);
         }
     }
+
+    @SpirePatch2(clz = Smite.class, method = SpirePatch.CONSTRUCTOR)
+    public static class SmiteNerfBaseDamage {
+        private static final int DMG = 10;
+        @SpirePostfixPatch
+        public static void patch(AbstractCard __instance) {
+            __instance.baseDamage = DMG;
+        }
+    }
 }
