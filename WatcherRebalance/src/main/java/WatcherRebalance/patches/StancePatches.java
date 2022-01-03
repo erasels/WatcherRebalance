@@ -133,7 +133,8 @@ public class StancePatches {
     public static class GainMantraOnChange {
         @SpireInsertPatch(locator = Locator.class)
         public static void patch() {
-            if(AbstractDungeon.player.chosenClass == AbstractPlayer.PlayerClass.WATCHER) {
+            if(AbstractDungeon.player.chosenClass == AbstractPlayer.PlayerClass.WATCHER
+            && (WrathStance.STANCE_ID.equals(UC.p().stance.ID) || CalmStance.STANCE_ID.equals(UC.p().stance.ID))) {
                 UC.doPow(new MantraPower(UC.p(), 1));
             }
         }
