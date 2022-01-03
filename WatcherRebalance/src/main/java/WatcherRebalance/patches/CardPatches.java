@@ -35,7 +35,7 @@ import javassist.expr.ExprEditor;
 import javassist.expr.NewExpr;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class CardPatches {
@@ -640,7 +640,7 @@ public class CardPatches {
         }
     }
 
-    @SpirePatch2(clz = EmptyMind.class, method = "upgrade")
+    @SpirePatch2(clz = Perseverance.class, method = "upgrade")
     public static class PerseveranceSkipMagicUpgrade {
         @SpireInsertPatch(rloc = 3)
         public static SpireReturn<?> patch(AbstractCard __instance) {
@@ -663,13 +663,13 @@ public class CardPatches {
         private static ArrayList<AbstractCard> persvList = new ArrayList<>();
         private static boolean searchedForPersv = false;
         @SpireInsertPatch(locator = Locator.class)
-        public static void patch() {
+        public static void patch(CardGroup ___group) {
             if(!searchedForPersv) {
-                //Find all instances of Perseverance in play
-                Stream.of(UC.hand().group, UC.p().exhaustPile.group, UC.p().discardPile.group, UC.p().drawPile.group)
-                        .flatMap(Collection::stream)
+                //Find all instances of Perseverance in play, ___group instead of hand because these cards are transferred between them after this is called
+                persvList = Stream.of(___group.group, UC.p().exhaustPile.group, UC.p().discardPile.group, UC.p().drawPile.group)
+                        .flatMap(ArrayList::stream)
                         .filter(c -> c instanceof Perseverance)
-                        .forEach(persv -> persvList.add(persv));
+                        .collect(Collectors.toCollection(ArrayList::new));
                 searchedForPersv = true;
             }
             //Increase block of in-combat instances
