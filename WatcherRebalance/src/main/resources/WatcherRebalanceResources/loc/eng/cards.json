@@ -6,8 +6,8 @@
   },
   "Eruption": {
     "NAME": "Eruption",
-    "DESCRIPTION": "Deal !D! damage. NL Enter Wrath. NL If you were in Calm, gain [E] .",
-    "UPGRADE_DESCRIPTION": "Deal !D! damage. NL Enter Wrath. NL If you were in Calm, gain [E] [E] ."
+    "DESCRIPTION": "Deal !D! damage. NL Enter Wrath. NL If you were in Calm, gain [W] .",
+    "UPGRADE_DESCRIPTION": "Deal !D! damage. NL Enter Wrath. NL If you were in Calm, gain [W] [W] ."
   },
   "SignatureMove": {
     "NAME": "Signature Move",
@@ -21,7 +21,7 @@
   "LikeWater": {
     "NAME": "Like Water",
     "DESCRIPTION": "Whenever you exit Calm, draw !M! card.",
-    "UPGRADE_DESCRIPTION": "Whenever you exit Calm, gain [E] ."
+    "UPGRADE_DESCRIPTION": "Whenever you exit Calm, gain [W] ."
   },
   "Weave": {
     "NAME": "Weave",
@@ -33,11 +33,11 @@
   },
   "FollowUp": {
     "NAME": "Follow-Up",
-    "DESCRIPTION": "Deal !D! damage. NL If the last card played this combat was an Attack, gain [E] [E]."
+    "DESCRIPTION": "Deal !D! damage. NL If the last card played this combat was an Attack, gain [W] [W]."
   },
   "ThroughViolence": {
     "NAME": "Through Violence",
-    "DESCRIPTION": "Deal !D! damage. NL If you are in Wrath, enter Calm and gain [E] [E]. NL Exhaust."
+    "DESCRIPTION": "Deal !D! damage. NL If you are in Wrath, enter Calm and gain [W] [W]. NL Exhaust."
   },
   "Sanctity": {
     "NAME": "Sanctity",
@@ -45,8 +45,8 @@
   },
   "EmptyMind": {
     "NAME": "Empty Mind",
-    "DESCRIPTION": "Draw !M! cards. NL Exit your Stance to gain [E].",
-    "UPGRADE_DESCRIPTION": "Draw !M! cards. NL Exit your Stance to gain [E]."
+    "DESCRIPTION": "Draw !M! cards. NL Exit your Stance to gain [W].",
+    "UPGRADE_DESCRIPTION": "Draw !M! cards. NL Exit your Stance to gain [W]."
   },
   "EmptyFist": {
     "NAME": "Empty Fist",
