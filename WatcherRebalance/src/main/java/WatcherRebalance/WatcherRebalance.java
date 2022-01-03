@@ -2,20 +2,25 @@ package WatcherRebalance;
 
 import WatcherRebalance.cards.NewSanctity;
 import WatcherRebalance.cards.NewWreathOfFlames;
+import WatcherRebalance.util.UC;
 import basemod.BaseMod;
 import basemod.ModLabeledToggleButton;
 import basemod.ModPanel;
+import basemod.helpers.CardBorderGlowManager;
 import basemod.interfaces.EditCardsSubscriber;
 import basemod.interfaces.EditKeywordsSubscriber;
 import basemod.interfaces.EditStringsSubscriber;
 import basemod.interfaces.PostInitializeSubscriber;
+import com.badlogic.gdx.graphics.Color;
 import com.evacipated.cardcrawl.modthespire.lib.SpireConfig;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
+import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
 import com.megacrit.cardcrawl.localization.CardStrings;
 import com.megacrit.cardcrawl.localization.StanceStrings;
+import com.megacrit.cardcrawl.stances.NeutralStance;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -67,9 +72,27 @@ public class WatcherRebalance implements
                         }
                     }
                 });
-        settingsPanel.addUIElement(HHBtn);
+        //settingsPanel.addUIElement(HHBtn);
 
         BaseMod.registerModBadge(ImageMaster.loadImage("WatcherRebalanceResources/img/modBadge.png"), "Watcher Rebalance", "erasels", "TODO", settingsPanel);
+
+        //Add custom glows to Empty card series when in a stance
+        CardBorderGlowManager.addGlowInfo(new CardBorderGlowManager.GlowInfo() {
+            @Override
+            public boolean test(AbstractCard c) {
+                return !NeutralStance.STANCE_ID.equals(UC.p().stance.ID) && c.hasTag(AbstractCard.CardTags.EMPTY);
+            }
+
+            @Override
+            public Color getColor(AbstractCard c) {
+                return Color.GOLD.cpy();
+            }
+
+            @Override
+            public String glowID() {
+                return "WatcherRebalance:EmptyCardsCustomGlow";
+            }
+        });
     }
 
     @Override
