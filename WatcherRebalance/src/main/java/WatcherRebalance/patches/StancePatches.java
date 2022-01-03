@@ -133,7 +133,9 @@ public class StancePatches {
     public static class GainMantraOnChange {
         @SpireInsertPatch(locator = Locator.class)
         public static void patch() {
-            UC.doPow(new MantraPower(UC.p(), 1));
+            if(AbstractDungeon.player.chosenClass == AbstractPlayer.PlayerClass.WATCHER) {
+                UC.doPow(new MantraPower(UC.p(), 1));
+            }
         }
 
         private static class Locator extends SpireInsertLocator {
