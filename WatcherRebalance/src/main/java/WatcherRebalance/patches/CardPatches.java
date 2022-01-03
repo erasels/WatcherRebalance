@@ -353,15 +353,28 @@ public class CardPatches {
     @SpirePatch2(clz = EmptyMind.class, method = "use")
     public static class ChangeEmptyMind {
         @SpireInsertPatch(rloc = 5)
-        public static void patch() {
-            UC.atb(new NotStanceCheckAction(NeutralStance.STANCE_ID, new GainEnergyAction(1)));
+        public static void patch(AbstractCard __instance) {
+            if(__instance.upgraded) {
+                UC.atb(new NotStanceCheckAction(NeutralStance.STANCE_ID, new GainEnergyAction(1)));
+            }
+        }
+    }
+
+    //Remove empty mind magic number upgrade
+    @SpirePatch2(clz = EmptyMind.class, method = "upgrade")
+    public static class EmptyMindChangeUpgrade {
+        @SpireInsertPatch(rloc = 3)
+        public static void patch(AbstractCard __instance) {
+            __instance.baseMagicNumber -= 1;
+            __instance.magicNumber = __instance.baseMagicNumber;
+            __instance.upgradedMagicNumber = false;
         }
     }
 
     //Empty Fist
     @SpirePatch2(clz = EmptyFist.class, method = SpirePatch.CONSTRUCTOR)
     public static class EmptyFistChangeBaseValues {
-        private static final int MAGIC = 2;
+        private static final int MAGIC = 1;
         @SpirePostfixPatch
         public static void patch(AbstractCard __instance) {
             __instance.baseMagicNumber = __instance.magicNumber = MAGIC;

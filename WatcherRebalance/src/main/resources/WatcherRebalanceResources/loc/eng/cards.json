@@ -45,7 +45,7 @@
   },
   "EmptyMind": {
     "NAME": "Empty Mind",
-    "DESCRIPTION": "Draw !M! cards. NL Exit your Stance to gain [W].",
+    "DESCRIPTION": "Draw !M! cards. NL Exit your Stance.",
     "UPGRADE_DESCRIPTION": "Draw !M! cards. NL Exit your Stance to gain [W]."
   },
   "EmptyFist": {
