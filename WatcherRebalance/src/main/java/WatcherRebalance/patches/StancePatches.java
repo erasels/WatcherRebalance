@@ -3,10 +3,12 @@ package WatcherRebalance.patches;
 import WatcherRebalance.util.UC;
 import com.badlogic.gdx.math.MathUtils;
 import com.evacipated.cardcrawl.modthespire.lib.*;
+import com.megacrit.cardcrawl.actions.common.DiscardAtEndOfTurnAction;
 import com.megacrit.cardcrawl.actions.common.GainEnergyAction;
 import com.megacrit.cardcrawl.actions.watcher.ChangeStanceAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
+import com.megacrit.cardcrawl.core.EnergyManager;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.powers.watcher.MantraPower;
 import com.megacrit.cardcrawl.relics.PrismaticShard;
@@ -14,7 +16,10 @@ import com.megacrit.cardcrawl.stances.AbstractStance;
 import com.megacrit.cardcrawl.stances.CalmStance;
 import com.megacrit.cardcrawl.stances.DivinityStance;
 import com.megacrit.cardcrawl.stances.WrathStance;
+import javassist.CannotCompileException;
 import javassist.CtBehavior;
+import javassist.expr.ExprEditor;
+import javassist.expr.MethodCall;
 
 public class StancePatches {
     //Wrath
@@ -22,6 +27,7 @@ public class StancePatches {
     @SpirePatch2(clz = WrathStance.class, method = "atDamageGive")
     public static class ReduceWrathNumbers {
         private static final float MULTI = 1.5f;
+
         //Inserts before return of multiplied damage
         @SpireInsertPatch(rloc = 1)
         public static SpireReturn<Float> patch(float damage) {
@@ -44,9 +50,10 @@ public class StancePatches {
     public static class BlockModificationStancePatch {
         public static float BLK_MULTI = 1.33333333333f;
         public static int BLK_ADD = 2;
+
         @SpireInsertPatch(locator = Locator.class, localvars = {"tmp"})
         public static void patch(AbstractCard __instance, @ByRef float[] tmp) {
-            if(UC.p().stance instanceof CalmStance) {
+            if (UC.p().stance instanceof CalmStance) {
                 tmp[0] = tmp[0] + BLK_ADD;
             }
         }
@@ -61,7 +68,7 @@ public class StancePatches {
     }
 
     //Divinity
-    @SpirePatch2(clz=DivinityStance.class, method=SpirePatch.CLASS)
+    @SpirePatch2(clz = DivinityStance.class, method = SpirePatch.CLASS)
     public static class StanceField {
         public static SpireField<String> prevStance = new SpireField<>(() -> "");
     }
@@ -74,12 +81,49 @@ public class StancePatches {
         }
     }
 
-    @SpirePatch2(clz = DivinityStance.class, method = "onEnterStance")
+    /*@SpirePatch2(clz = DivinityStance.class, method = "onEnterStance")
     public static class AddCardDrawOnEnterDiv {
         private static final int DIV_DRAW = 2;
         @SpirePostfixPatch
         public static void patch() {
             UC.doDraw(DIV_DRAW);
+        }
+    }*/
+
+    @SpirePatch2(clz = DiscardAtEndOfTurnAction.class, method = "update")
+    public static class DivinityRetainCards {
+        @SpireInsertPatch(locator = Locator.class, localvars = {"e"})
+        public static void patch(AbstractCard e) {
+            e.retain = true;
+        }
+
+        private static class Locator extends SpireInsertLocator {
+            @Override
+            public int[] Locate(CtBehavior ctBehavior) throws Exception {
+                Matcher finalMatcher = new Matcher.FieldAccessMatcher(AbstractCard.class, "retain");
+                return LineFinder.findInOrder(ctBehavior, finalMatcher);
+            }
+        }
+    }
+
+    @SpirePatch2(clz = EnergyManager.class, method = "recharge")
+    public static class DivinityConserveEnergy {
+        @SpireInstrumentPatch
+        public static ExprEditor GoIntoIceCreamLogic() {
+            return new ExprEditor() {
+                public void edit(MethodCall m) throws CannotCompileException {
+                    if (m.getClassName().equals(AbstractPlayer.class.getName()) && m.getMethodName().equals("hasPower")) {
+
+                        m.replace("{ " +
+                                "$_ = $proceed($$) || " + DivinityConserveEnergy.class.getName() + ".CheckForDivinity();" +
+                                "}");
+                    }
+                }
+            };
+        }
+
+        public static boolean CheckForDivinity() {
+            return DivinityStance.STANCE_ID.equals(UC.p().stance.ID);
         }
     }
 
@@ -96,7 +140,7 @@ public class StancePatches {
         @SpireInsertPatch(locator = Locator2.class)
         public static void patch(AbstractStance ___newStance, String ___id) {
             //Divinity save stance
-            if(___id.equals(DivinityStance.STANCE_ID)) {
+            if (___id.equals(DivinityStance.STANCE_ID)) {
                 StanceField.prevStance.set(___newStance, UC.p().stance.ID);
                 ___newStance.updateDescription();
             }
@@ -133,8 +177,8 @@ public class StancePatches {
     public static class GainMantraOnChange {
         @SpireInsertPatch(locator = Locator.class)
         public static void patch() {
-            if((UC.p().chosenClass == AbstractPlayer.PlayerClass.WATCHER || UC.p().hasRelic(PrismaticShard.ID))
-            && (WrathStance.STANCE_ID.equals(UC.p().stance.ID) || CalmStance.STANCE_ID.equals(UC.p().stance.ID))) {
+            if ((UC.p().chosenClass == AbstractPlayer.PlayerClass.WATCHER || UC.p().hasRelic(PrismaticShard.ID))
+                    && (WrathStance.STANCE_ID.equals(UC.p().stance.ID) || CalmStance.STANCE_ID.equals(UC.p().stance.ID))) {
                 UC.doPow(new MantraPower(UC.p(), 1));
             }
         }

@@ -14,7 +14,7 @@
   "Divinity": {
     "NAME": "Divinity",
     "DESCRIPTION": [
-      "Upon entering this stance, gain [W] [W] [W] and draw 2 cards. Switch back to your previous #yStance at the start of your next turn."
+      "Upon entering this stance, gain [W] [W] [W] . When ending your turn in this stance, conserve your energy and #yRetain your cards. NL Switch back to your previous #yStance at the start of your next turn."
     ]
   }
 }

@@ -99,7 +99,7 @@ public class WatcherRebalance implements
     public void receiveEditKeywords() {
         BaseMod.addKeyword("Wrath", new String[]{"wrath"},"In this #yStance, you deal and receive #b50% increased attack damage.");
         BaseMod.addKeyword("Calm", new String[]{"calm"},"Increase #yBlock gained from cards by #b2. NL Upon exiting this #yStance, gain [W] .");
-        BaseMod.addKeyword("Divinity", new String[]{"divinity"},"Upon entering this stance, gain [W] [W] [W] and draw 2 cards. Switch back to your previous #yStance at the start of your next turn.");
+        BaseMod.addKeyword("Divinity", new String[]{"divinity"},"Upon entering this stance, gain [W] [W] [W] . When ending your turn in this stance, conserve your energy and #yRetain your cards. NL Switch back to your previous #yStance at the start of your next turn.");
         BaseMod.addKeyword("Stance", new String[]{"stance", "stances"},"You can only have one stance at a time. NL Whenever you switch into #yWrath or #yCalm, gain #b1 #yMantra.");
 
         BaseMod.addKeyword("watcherrebalance:" ,"Scryed", new String[]{"scryed", "scry"},"The effect triggers when the card is discarded via #yScry.");
