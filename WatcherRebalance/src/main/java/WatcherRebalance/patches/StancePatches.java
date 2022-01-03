@@ -10,6 +10,7 @@ import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.powers.watcher.MantraPower;
+import com.megacrit.cardcrawl.relics.PrismaticShard;
 import com.megacrit.cardcrawl.stances.AbstractStance;
 import com.megacrit.cardcrawl.stances.CalmStance;
 import com.megacrit.cardcrawl.stances.DivinityStance;
@@ -133,7 +134,7 @@ public class StancePatches {
     public static class GainMantraOnChange {
         @SpireInsertPatch(locator = Locator.class)
         public static void patch() {
-            if(AbstractDungeon.player.chosenClass == AbstractPlayer.PlayerClass.WATCHER
+            if((UC.p().chosenClass == AbstractPlayer.PlayerClass.WATCHER || UC.p().hasRelic(PrismaticShard.ID))
             && (WrathStance.STANCE_ID.equals(UC.p().stance.ID) || CalmStance.STANCE_ID.equals(UC.p().stance.ID))) {
                 UC.doPow(new MantraPower(UC.p(), 1));
             }
