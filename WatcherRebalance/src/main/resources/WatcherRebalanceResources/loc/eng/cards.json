@@ -81,5 +81,9 @@
   "Smite": {
     "NAME": "Smite",
     "DESCRIPTION": "Retain. NL Deal !D! damage. NL Deals double damage when in Divinity. NL Exhaust."
+  },
+  "Perseverance": {
+    "NAME": "Perseverance",
+    "DESCRIPTION": "Retain. NL Gain !B! Block. NL Whenever a card is Retained, increase Block by !M! this combat."
   }
 }

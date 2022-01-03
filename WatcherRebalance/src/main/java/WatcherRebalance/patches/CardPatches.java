@@ -10,11 +10,13 @@ import com.badlogic.gdx.graphics.Color;
 import com.evacipated.cardcrawl.modthespire.lib.*;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.actions.common.*;
+import com.megacrit.cardcrawl.actions.unique.RestoreRetainedCardsAction;
 import com.megacrit.cardcrawl.actions.watcher.ChangeStanceAction;
 import com.megacrit.cardcrawl.actions.watcher.FollowUpAction;
 import com.megacrit.cardcrawl.actions.watcher.NotStanceCheckAction;
 import com.megacrit.cardcrawl.actions.watcher.StanceCheckAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.cards.CardGroup;
 import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.cards.purple.*;
 import com.megacrit.cardcrawl.cards.tempCards.Smite;
@@ -31,6 +33,10 @@ import com.megacrit.cardcrawl.stances.WrathStance;
 import javassist.*;
 import javassist.expr.ExprEditor;
 import javassist.expr.NewExpr;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.stream.Stream;
 
 public class CardPatches {
     //Blasphemy
@@ -621,6 +627,67 @@ public class CardPatches {
         @SpirePostfixPatch
         public static void patch(AbstractCard __instance) {
             __instance.baseDamage = DMG;
+        }
+    }
+
+    //Perseverance
+    @SpirePatch2(clz = Perseverance.class, method = SpirePatch.CONSTRUCTOR)
+    public static class PerseveranceChangeBaseValues {
+        private static final int BLK = 3;
+        @SpirePostfixPatch
+        public static void patch(AbstractCard __instance) {
+            __instance.baseBlock = BLK;
+        }
+    }
+
+    @SpirePatch2(clz = EmptyMind.class, method = "upgrade")
+    public static class PerseveranceSkipMagicUpgrade {
+        @SpireInsertPatch(rloc = 3)
+        public static SpireReturn<?> patch(AbstractCard __instance) {
+            //skip magic and increase baseblock upgrade by 1
+            ReflectionHacks.privateMethod(AbstractCard.class, "upgradeBlock", int.class).invoke(__instance, 1);
+            return SpireReturn.Return();
+        }
+    }
+
+    @SpirePatch2(clz = Perseverance.class, method = "onRetained")
+    public static class PerseveranceRemoveOriginalSpecialEffect {
+        @SpirePrefixPatch
+        public static SpireReturn<?> patch() {
+            return SpireReturn.Return();
+        }
+    }
+
+    @SpirePatch2(clz = RestoreRetainedCardsAction.class, method = "update")
+    public static class PerseveranceBlockIncreaseOnOtherCardRetained {
+        private static ArrayList<AbstractCard> persvList = new ArrayList<>();
+        private static boolean searchedForPersv = false;
+        @SpireInsertPatch(locator = Locator.class)
+        public static void patch() {
+            if(!searchedForPersv) {
+                //Find all instances of Perseverance in play
+                Stream.of(UC.hand().group, UC.p().exhaustPile.group, UC.p().discardPile.group, UC.p().drawPile.group)
+                        .flatMap(Collection::stream)
+                        .filter(c -> c instanceof Perseverance)
+                        .forEach(persv -> persvList.add(persv));
+                searchedForPersv = true;
+            }
+            //Increase block of in-combat instances
+            persvList.forEach(persv -> ReflectionHacks.privateMethod(AbstractCard.class, "upgradeBlock", int.class).invoke(persv, persv.magicNumber));
+        }
+
+        private static class Locator extends SpireInsertLocator {
+            @Override
+            public int[] Locate(CtBehavior ctBehavior) throws Exception {
+                Matcher finalMatcher = new Matcher.MethodCallMatcher(CardGroup.class, "addToTop");
+                return LineFinder.findInOrder(ctBehavior, finalMatcher);
+            }
+        }
+
+        @SpirePostfixPatch
+        public static void cleanUp() {
+            searchedForPersv = false;
+            persvList.clear();
         }
     }
 }
