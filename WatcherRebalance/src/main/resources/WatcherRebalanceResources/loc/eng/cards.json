@@ -25,7 +25,7 @@
   },
   "Weave": {
     "NAME": "Weave",
-    "DESCRIPTION": "Deal !D! damage. NL watcherrebalance:Reshuffle. NL When scryed, deal !M! damage to ALL enemies."
+    "DESCRIPTION": "Deal !D! damage. NL watcherrebalance:Reshuffle. NL When watcherrebalance:scryed, deal !M! damage to ALL enemies."
   },
   "Tantrum": {
     "NAME": "Tantrum",
@@ -58,8 +58,8 @@
   },
   "DeusExMachina": {
     "NAME": "Deus Ex Machina",
-    "DESCRIPTION": "Unplayable. NL When you draw or scry this card, add *Miracle+ to your hand. Exhaust when drawn.",
-    "UPGRADE_DESCRIPTION": "Unplayable. NL When you draw or scry this card, add !M! *Miracle+s to your hand. NL Exhausts when drawn."
+    "DESCRIPTION": "Unplayable. NL When you draw or watcherrebalance:scry this card, add *Miracle+ to your hand. Exhausts when drawn.",
+    "UPGRADE_DESCRIPTION": "Unplayable. NL When you draw or watcherrebalance:scry this card, add !M! *Miracle+s to your hand. NL Exhausts when drawn."
   },
   "CarveReality": {
     "NAME": "Strike Reality",

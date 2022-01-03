@@ -102,7 +102,7 @@ public class WatcherRebalance implements
         BaseMod.addKeyword("Divinity", new String[]{"divinity"},"Upon entering this stance, gain [W] [W] [W] and draw 2 cards. Switch back to your previous #yStance at the start of your next turn.");
         BaseMod.addKeyword("Stance", new String[]{"stance", "stances"},"You can only have one stance at a time. NL Whenever you switch between them, gain #b1 #yMantra.");
 
-        BaseMod.addKeyword("Scryed", new String[]{"scryed"},"The effect triggers when the card is discarded via #yScry.");
+        BaseMod.addKeyword("watcherrebalance:" ,"Scryed", new String[]{"scryed", "scry"},"The effect triggers when the card is discarded via #yScry.");
 
         BaseMod.addKeyword("watcherrebalance:" ,"Reshuffle", new String[]{"reshuffle"},"When played, shuffle this card into your draw pile.");
     }
