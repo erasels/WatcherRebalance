@@ -1,6 +1,5 @@
 package WatcherRebalance.patches;
 
-import WatcherRebalance.power.EnterDivNextTurnPower;
 import WatcherRebalance.util.UC;
 import com.badlogic.gdx.math.MathUtils;
 import com.evacipated.cardcrawl.modthespire.lib.*;
@@ -86,13 +85,13 @@ public class StancePatches {
 
     @SpirePatch2(clz = ChangeStanceAction.class, method = "update")
     public static class StanceChangeDivMechanics {
-        @SpireInsertPatch(locator = Locator.class)
+        /*@SpireInsertPatch(locator = Locator.class)
         public static void patch(String ___id) {
             //DivStacking
             if(___id.equals(DivinityStance.STANCE_ID) && UC.p().stance.ID.equals(DivinityStance.STANCE_ID)) {
                     UC.doPow(new EnterDivNextTurnPower(UC.p(), 1));
             }
-        }
+        }*/
 
         @SpireInsertPatch(locator = Locator2.class)
         public static void patch(AbstractStance ___newStance, String ___id) {
