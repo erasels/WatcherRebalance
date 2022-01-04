@@ -94,7 +94,8 @@ public class StancePatches {
     public static class DivinityRetainCards {
         @SpireInsertPatch(locator = Locator.class, localvars = {"e"})
         public static void patch(AbstractCard e) {
-            e.retain = true;
+            if(DivinityStance.STANCE_ID.equals(UC.p().stance.ID))
+                e.retain = true;
         }
 
         private static class Locator extends SpireInsertLocator {
