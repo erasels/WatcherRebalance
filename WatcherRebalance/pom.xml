@@ -6,7 +6,7 @@
     <groupId>UpdateBodyText</groupId>
     <artifactId>WatcherRebalance</artifactId>
     <name>Watcher Rebalance</name>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <description>This mod rebalances the Watcher base game character to have less of a focus on burst damage.</description>
 
     <properties>
@@ -15,7 +15,7 @@
         <SlayTheSpire.version>01-23-2019</SlayTheSpire.version>
         <ModTheSpire.version>3.8.0</ModTheSpire.version>
         <!--CHANGE THIS TO YOUR STEAM INSTALLATION-->
-        <Steam.path>K:/Steam/steamapps</Steam.path>
+        <Steam.path>E:/SteamLibrary/steamapps</Steam.path>
     </properties>
 
     <dependencies>

@@ -1,0 +1,89 @@
+{
+  "Blasphemy": {
+    "NAME": "渎神",
+    "DESCRIPTION": "进入 神格 。 NL 在下回合受到 !M! 点伤害。 NL  消耗 。",
+    "UPGRADE_DESCRIPTION": " 保留 。 NL 进入 神格 。 NL 在下回合受到 !M! 点伤害。 NL  消耗 。"
+  },
+  "Eruption": {
+    "NAME": "发泄",
+    "DESCRIPTION": "造成 !D! 点伤害。 NL 进入 愤怒 。 NL 如果你曾处于 平静 , 获得 [W] 。",
+    "UPGRADE_DESCRIPTION": "造成 !D! 点伤害。 NL 进入 愤怒 。 NL 如果你曾处于 平静 , 获得 [W] [W] 。"
+  },
+  "SignatureMove": {
+    "NAME": "招牌技",
+    "DESCRIPTION": "只有当这张牌是你手中唯一一张攻击牌且你处于 神格 时才可以被打出。 NL 造成 !D! 点伤害。"
+  },
+  "MasterReality": {
+    "NAME": "操控现实",
+    "DESCRIPTION": "所有在战斗中临时增加的牌将会被 升级 。",
+    "UPGRADE_DESCRIPTION": " 固有 。 NL 所有在战斗中临时增加的牌将会被 升级 。"
+  },
+  "LikeWater": {
+    "NAME": "如水",
+    "DESCRIPTION": "当你退出 平静 时, 摸 !M! 牌。",
+    "UPGRADE_DESCRIPTION": "当你退出 平静 时, 获得 [W] 。"
+  },
+  "Weave": {
+    "NAME": "迂回",
+    "DESCRIPTION": "造成 !D! 点伤害。 NL  watcherrebalance:重洗 。 NL  watcherrebalance:回响 时, 对所有敌人造成 !M! 点伤害。"
+  },
+  "Tantrum": {
+    "NAME": "发泄",
+    "DESCRIPTION": "造成 !D! 点伤害 !M! 次。 NL 进入 愤怒 。 NL  watcherrebalance:重洗 。"
+  },
+  "FollowUp": {
+    "NAME": "追击",
+    "DESCRIPTION": "造成 !D! 点伤害。 NL 如果本场战斗中打出的上一张牌是攻击牌, 获得 [W] [W] 。"
+  },
+  "ThroughViolence": {
+    "NAME": "以暴易暴",
+    "DESCRIPTION": "造成 !D! 点伤害。 NL 如果你处于 愤怒 , 进入 平静 并获得 [W] [W] 。 NL  消耗 。"
+  },
+  "Sanctity": {
+    "NAME": "圣洁",
+    "DESCRIPTION": "获得 !B! 点 格挡 。 NL 将 !M! 张 *奇迹 加入抽牌堆，取决于 真言 数量。"
+  },
+  "EmptyMind": {
+    "NAME": "化智为空",
+    "DESCRIPTION": "摸 !M! 张牌。 NL 退出当前 姿态 。",
+    "UPGRADE_DESCRIPTION": "摸 !M! 张牌。 NL 退出当前 姿态 并获得 [W] 。"
+  },
+  "EmptyFist": {
+    "NAME": "化拳为空",
+    "DESCRIPTION": "造成 !D! 点伤害。 NL 退出当前 姿态 并获得 !M! 点 力量 。"
+  },
+  "EmptyBody": {
+    "NAME": "化体为空",
+    "DESCRIPTION": "获得 !B! 点 格挡 。 NL 退出当前 姿态 并获得 !M! 层 多层护甲 "
+  },
+  "DeusExMachina": {
+    "NAME": "机械降神",
+    "DESCRIPTION": " 不能被打出 。 NL 当你抽到或 预见 这张牌时, 添加一张 *奇迹+ 到手牌, 然后 消耗 。",
+    "UPGRADE_DESCRIPTION": " 不能被打出 。 NL 当你抽到或 预见 这张牌时, 添加 !M! 张 *奇迹+ 到手牌, 然后 消耗 。"
+  },
+  "CarveReality": {
+    "NAME": "改造现实",
+    "DESCRIPTION": "造成 !D! 点伤害。 NL 添加一张 *惩恶 到手牌。"
+  },
+  "Adaptation": {
+    "NAME": "猛虎下山",
+    "DESCRIPTION": "当你切换 姿态 时, 摸 !M! 张牌。"
+  },
+  "WreathOfFlame": {
+    "NAME": "洞见",
+    "DESCRIPTION": " 预见 !M! 。 NL 摸2张牌。"
+  },
+  "Pray": {
+    "NAME": "祈祷",
+    "DESCRIPTION": "获得 !M! 点 真言 。 NL 在抽牌堆中加入一张 *洞见 。",
+    "UPGRADE_DESCRIPTION": "获得 !M! 点 真言 。 NL 在抽牌堆中加入两张 *洞见 。"
+  },
+  "Smite": {
+    "NAME": "惩恶",
+    "DESCRIPTION": " 保留 。 NL 造成 !D! 点伤害。 NL 处于 神格 时造成双倍伤害。 NL  消耗 。"
+  },
+  "Perseverance": {
+    "NAME": "平安",
+    "DESCRIPTION": " 保留 。 NL 获得 !B! 点 格挡 。 NL 这场战斗每有一张卡牌被 保留 , 提升 !M! 点 格挡 。"
+  }
+}
