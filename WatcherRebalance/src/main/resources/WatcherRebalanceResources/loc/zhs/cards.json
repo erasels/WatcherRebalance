@@ -41,7 +41,7 @@
   },
   "Sanctity": {
     "NAME": "圣洁",
-    "DESCRIPTION": "获得 !B! 点 格挡 。 NL 将 !M! 张 *奇迹 加入抽牌堆，取决于 真言 数量。"
+    "DESCRIPTION": "获得 !B! 点 格挡 。 NL 每有 !M! 点 真言 ，将一张 *奇迹 加入抽牌堆，取决于 真言 数量。"
   },
   "EmptyMind": {
     "NAME": "化智为空",
